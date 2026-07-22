@@ -1,0 +1,14 @@
+{
+  "name": "@workspace/discord-bot",
+  "version": "1.0.0",
+  "description": "بوت ديسكورد لإدارة نقاط الترقية",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "deploy": "node src/deploy-commands.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.0",
+    "pg": "^8.22.0"
+  }
+}
