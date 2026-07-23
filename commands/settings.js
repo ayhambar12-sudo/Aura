@@ -28,7 +28,7 @@ module.exports = {
     .addSubcommand(s => s
       .setName('رتب_الإدارة')
       .setDescription('تحديد رتبة الإدارة (تستطيع إضافة النقاط فقط)')
-      .addRoleOption(o => o.setName('الرتبة').setDescription('اختر الرتبة').setRequired(true))
+      .addRoleOption(o => o.setName('الرتبة').setDescription('اختر الرتبة').setRequired(true)))
     .addSubcommand(s => s
       .setName('جدول_التقارير')
       .setDescription('تعديل جدول التقارير التلقائية')
@@ -89,14 +89,14 @@ module.exports = {
         return `✅ تم تغيير قناة التقارير إلى ${ch}.`;
       },
       'رتب_المالك':    async () => {
-        const v = interaction.options.getString('الرتب');
-        await db.setGuildSetting(interaction.guildId, 'owner_roles', v);
-        return `✅ تم تحديث رتب المالك: \`${v}\``;
+        const role = interaction.options.getRole('الرتبة');
+        await db.setGuildSetting(interaction.guildId, 'owner_roles', role.id);
+        return `✅ تم تحديث رتبة المالك: ${role}`;
       },
       'رتب_الإدارة':   async () => {
-        const v = interaction.options.getString('الرتب');
-        await db.setGuildSetting(interaction.guildId, 'staff_roles', v);
-        return `✅ تم تحديث رتب الإدارة: \`${v}\``;
+        const role = interaction.options.getRole('الرتبة');
+        await db.setGuildSetting(interaction.guildId, 'staff_roles', role.id);
+        return `✅ تم تحديث رتبة الإدارة: ${role}`;
       },
       'جدول_التقارير': async () => {
         const type = interaction.options.getString('النوع');
