@@ -23,12 +23,12 @@ module.exports = {
       .addChannelOption(o => o.setName('القناة').setDescription('القناة').setRequired(true).addChannelTypes(ChannelType.GuildText)))
     .addSubcommand(s => s
       .setName('رتب_المالك')
-      .setDescription('تحديد رتب المالك (يملكون كل الصلاحيات)')
-      .addStringOption(o => o.setName('الرتب').setDescription('أسماء الرتب مفصولة بفاصلة').setRequired(true)))
+      .setDescription('تحديد رتبة المالك (تملك كل الصلاحيات)')
+      .addRoleOption(o => o.setName('الرتبة').setDescription('اختر الرتبة').setRequired(true)))
     .addSubcommand(s => s
       .setName('رتب_الإدارة')
-      .setDescription('تحديد رتب الإدارة (يستطيعون إضافة النقاط فقط)')
-      .addStringOption(o => o.setName('الرتب').setDescription('أسماء الرتب مفصولة بفاصلة').setRequired(true)))
+      .setDescription('تحديد رتبة الإدارة (تستطيع إضافة النقاط فقط)')
+      .addRoleOption(o => o.setName('الرتبة').setDescription('اختر الرتبة').setRequired(true))
     .addSubcommand(s => s
       .setName('جدول_التقارير')
       .setDescription('تعديل جدول التقارير التلقائية')
