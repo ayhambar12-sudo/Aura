@@ -15,7 +15,7 @@ module.exports = {
 
   async execute(interaction) {
     const settings = await db.getGuildSettings(interaction.guildId);
-    if (!interaction.member.roles.cache.has(REQUIRED_ROLE_ID)) {
+    if (!interaction.member.roles.cache.has('1509317185770750092')) {
       return interaction.reply({ content: '❌ هذا الأمر متاح فقط لذوي الرتبة المخصصة.', ephemeral: true });
     }
 
