@@ -15,9 +15,15 @@ module.exports = {
 
   async execute(interaction) {
     const settings = await db.getGuildSettings(interaction.guildId);
-    if (!interaction.member.roles.cache.has('1509317185770750092')) {
-      return interaction.reply({ content: '❌ هذا الأمر متاح فقط لذوي الرتبة المخصصة.', ephemeral: true });
-    }
+    const ownerRoles = settings.owner_roles?.split(',') || [];
+
+if (!interaction.member.roles.cache.some(role => ownerRoles.includes(role.id))) {
+  return interaction.reply({
+    content: '❌ هذا الأمر متاح فقط لذوي رتبة المالك.',
+    ephemeral: true
+  });
+}
+    
 
     await interaction.deferReply();
     const targetUser = interaction.options.getUser('العضو');
