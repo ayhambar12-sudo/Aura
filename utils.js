@@ -10,7 +10,7 @@ function parseRoleNames(str) {
 function hasAnyRole(member, roleNamesStr) {
   const names = parseRoleNames(roleNamesStr);
   if (!names.length) return false;
-  return member.roles.cache.some(r => names.includes(r.name));
+  return member.roles.cache.some(r => names.includes(r.id));
 }
 
 function isOwner(member, settings) {
