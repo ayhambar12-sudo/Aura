@@ -29,9 +29,10 @@ const TYPE_COLOR = { add: 0x00C853, deduct: 0xD32F2F, set: 0xFFA000, reset: 0x60
 const TYPE_SIGN  = { add: '+', deduct: '-', set: '=', reset: '↩' };
 const TYPE_LABEL = { add: 'إضافة نقاط', deduct: 'خصم نقاط', set: 'تعيين نقاط', reset: 'تصفير نقاط' };
 
-async function sendLog(guild, settings, data) {
-  if (!settings.log_channel_id) return;
-  const channel = guild.channels.cache.get(settings.log_channel_id);
+async function sendLog(guild, settings, data, forcedChannelId = null) {
+  const channelId = forcedChannelId || settings.log_channel_id;
+  if (!channelId) return;
+  const channel = guild.channels.cache.get(channelId);
   if (!channel) return;
 
   const embed = new EmbedBuilder()
