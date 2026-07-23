@@ -14,7 +14,8 @@ function hasAnyRole(member, roleNamesStr) {
 }
 
 function isOwner(member, settings) {
-  if (member.permissions?.has?.('Administrator')) return true;
+  return hasAnyRole(member, settings.owner_roles);
+}
   return hasAnyRole(member, settings.owner_roles);
 }
 
