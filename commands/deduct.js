@@ -1,6 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const db = require('../database');
-const { isOwner, sendLog } = require('../utils');
+const { sendLog } = require('../utils');
+
+const REQUIRED_ROLE_ID = '1509317185770750092';
+const LOG_CHANNEL_ID = '1502301779705204926';
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,8 +15,8 @@ module.exports = {
 
   async execute(interaction) {
     const settings = await db.getGuildSettings(interaction.guildId);
-    if (!isOwner(interaction.member, settings)) {
-      return interaction.reply({ content: '❌ هذا الأمر للمالك فقط.', ephemeral: true });
+    if (!interaction.member.roles.cache.has(REQUIRED_ROLE_ID)) {
+      return interaction.reply({ content: '❌ هذا الأمر متاح فقط لذوي الرتبة المخصصة.', ephemeral: true });
     }
 
     await interaction.deferReply();
@@ -38,6 +41,6 @@ module.exports = {
     await sendLog(interaction.guild, settings, {
       type: 'deduct', targetUser, points, reason, newTotal,
       executorTag: interaction.user.tag, executorId: interaction.user.id,
-    });
+    }, LOG_CHANNEL_ID);
   },
 };
