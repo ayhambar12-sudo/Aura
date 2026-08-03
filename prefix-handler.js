@@ -197,8 +197,10 @@ async function handleMessage(message, client) {
       ).setTimestamp();
 
     return message.reply({ embeds: [embed] });
+  }// ── !نيوك (مقلب) ─────────────────────────────────────────────────────────
+  if (command === 'نيوك') {
+    return message.reply('جاري عمل نيوك للسيرفر🚀..\n|| مقلب😭✌️||');
   }
-
   // ── !نقاط @العضو ───────────────────────────────────────────────────────────
   if (command === 'نقاط') {
     const userId = parseMention(args[0]);
