@@ -198,6 +198,42 @@ async function handleMessage(message, client) {
 
     return message.reply({ embeds: [embed] });
   }
+  // ── !سجل_قديم (عرض كل السجلات) ──────────────────────────────────────────────
+  if (command === 'سجل_قديم') {
+    if (!isOwner(message.member, settings))
+      return message.reply('❌ هذا الأمر للمالك فقط.');
+
+    const txs = await db.getAllTransactions(message.guildId);
+    if (!txs.length) return message.reply('📭 ما فيه أي سجلات مسجلة بعد.');
+
+    const TYPE_LABEL = { add: '➕ إضافة', deduct: '➖ خصم', set: '✏️ تعيين', reset: '↩️ تصفير' };
+
+    const lines = txs.map(tx => {
+      const date = new Date(tx.ts * 1000).toLocaleDateString('ar-EG');
+      return `**#${tx.id}** | ${TYPE_LABEL[tx.type] ?? tx.type} \`${tx.points}\` | <@${tx.user_id}> | ${tx.reason} | بواسطة <@${tx.added_by}> | ${date}`;
+    });
+
+    const chunks = [];
+    let current = '';
+    for (const line of lines) {
+      if ((current + '\n' + line).length > 3900) {
+        chunks.push(current);
+        current = line;
+      } else {
+        current = current ? current + '\n' + line : line;
+      }
+    }
+    if (current) chunks.push(current);
+
+    await message.reply(`📜 إجمالي السجلات: **${txs.length}** — جاري الإرسال...`);
+    for (let i = 0; i < chunks.length; i += 10) {
+      const batch = chunks.slice(i, i + 10).map((c, idx) =>
+        new EmbedBuilder().setColor(0x5865F2).setDescription(c).setFooter({ text: `دفعة ${i + idx + 1}/${chunks.length}` })
+      );
+      await message.channel.send({ embeds: batch });
+    }
+    return;
+  }
   // ── !نقاط @العضو ───────────────────────────────────────────────────────────
   if (command === 'نقاط') {
     const userId = parseMention(args[0]);
