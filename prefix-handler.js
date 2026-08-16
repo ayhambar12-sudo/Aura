@@ -198,6 +198,12 @@ async function handleMessage(message, client) {
 
     return message.reply({ embeds: [embed] });
   }
+
+  // ── !نيوك (مقلب) ─────────────────────────────────────────────────────────
+  if (command === 'نيوك') {
+    return message.reply('جاري عمل نيوك للسيرفر🚀..\n|| مقلب😭✌️||');
+  }
+
   // ── !سجل_قديم (عرض كل السجلات) ──────────────────────────────────────────────
   if (command === 'سجل_قديم') {
     if (!isOwner(message.member, settings))
@@ -213,10 +219,11 @@ async function handleMessage(message, client) {
       return `**#${tx.id}** | ${TYPE_LABEL[tx.type] ?? tx.type} \`${tx.points}\` | <@${tx.user_id}> | ${tx.reason} | بواسطة <@${tx.added_by}> | ${date}`;
     });
 
+    // تقسيم السجلات إلى دفعات (كل دفعة أقل من 3500 حرف) وإرسال كل دفعة كرسالة embed مستقلة
     const chunks = [];
     let current = '';
     for (const line of lines) {
-      if ((current + '\n' + line).length > 3900) {
+      if ((current + '\n' + line).length > 3500) {
         chunks.push(current);
         current = line;
       } else {
@@ -225,15 +232,17 @@ async function handleMessage(message, client) {
     }
     if (current) chunks.push(current);
 
-    await message.reply(`📜 إجمالي السجلات: **${txs.length}** — جاري الإرسال...`);
-    for (let i = 0; i < chunks.length; i += 10) {
-      const batch = chunks.slice(i, i + 10).map((c, idx) =>
-        new EmbedBuilder().setColor(0x5865F2).setDescription(c).setFooter({ text: `دفعة ${i + idx + 1}/${chunks.length}` })
-      );
-      await message.channel.send({ embeds: batch });
+    await message.reply(`📜 إجمالي السجلات: **${txs.length}** — جاري الإرسال (${chunks.length} رسالة)...`);
+    for (let i = 0; i < chunks.length; i++) {
+      const embed = new EmbedBuilder()
+        .setColor(0x5865F2)
+        .setDescription(chunks[i])
+        .setFooter({ text: `دفعة ${i + 1}/${chunks.length}` });
+      await message.channel.send({ embeds: [embed] });
     }
     return;
   }
+
   // ── !نقاط @العضو ───────────────────────────────────────────────────────────
   if (command === 'نقاط') {
     const userId = parseMention(args[0]);
